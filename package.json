@@ -6,5 +6,7 @@
   "repository": "https://github.com/ony3000/cypress-trial.git",
   "author": "Hyeonjong <nianelo4@gmail.com>",
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "cypress": "^12.5.1"
+  }
 }
