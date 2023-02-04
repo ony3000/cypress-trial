@@ -2,7 +2,9 @@
   "name": "cypress-trial",
   "version": "0.1.0",
   "description": "Cypress 써보기",
-  "scripts": {},
+  "scripts": {
+    "cypress:open": "cypress open"
+  },
   "repository": "https://github.com/ony3000/cypress-trial.git",
   "author": "Hyeonjong <nianelo4@gmail.com>",
   "dependencies": {},
