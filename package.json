@@ -9,6 +9,7 @@
   "author": "Hyeonjong <nianelo4@gmail.com>",
   "dependencies": {},
   "devDependencies": {
-    "cypress": "^12.5.1"
+    "cypress": "^12.5.1",
+    "cypress-real-events": "^1.7.6"
   }
 }

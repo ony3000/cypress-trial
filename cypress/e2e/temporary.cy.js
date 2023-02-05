@@ -1,3 +1,27 @@
+function colorHex2regex(colorHex) {
+  if (!colorHex.match(/^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i)) {
+    return new RegExp(`(?:${colorHex})`);
+  }
+
+  const isShortHex = colorHex.match(/^#[0-9a-f]{3}$/i);
+
+  const [redHex, greenHex, blueHex] = isShortHex
+    ? colorHex.match(/[0-9a-f]/gi).map((h) => h.repeat(2))
+    : colorHex.match(/[0-9a-f]{2}/gi);
+  const fullHex = isShortHex ? `#${redHex}${greenHex}${blueHex}` : colorHex;
+
+  const candidates = [
+    isShortHex ? colorHex : null,
+    fullHex,
+    `rgb\\(${Number.parseInt(redHex, 16)}, ?${Number.parseInt(greenHex, 16)}, ?${Number.parseInt(
+      blueHex,
+      16,
+    )}\\)`,
+  ].filter((c) => c);
+
+  return new RegExp(`(?:${candidates.join('|')})`);
+}
+
 describe('My To Do Test', () => {
   context('임시 시나리오', () => {
     beforeEach(() => {
@@ -20,12 +44,30 @@ describe('My To Do Test', () => {
       cy.get('.AppHeader_button__1owkb').should('have.css', 'width', '48px')
     })
 
+    // 간헐적으로 실패함 (원인 파악 필요)
     it("focus 스타일 테스트", () => {
       cy.get('.AppHeader_button__1owkb').focus()
       cy.get('.AppHeader_button__1owkb').should('to.be.focused')
       cy.get('.AppHeader_button__1owkb').should('have.css', 'outline-width', '1px')
       cy.get('.AppHeader_button__1owkb').should('have.css', 'outline-style', 'solid')
-      cy.get('.AppHeader_button__1owkb').should('have.css', 'outline-color', 'rgb(255, 255, 255)')
+      cy.get('.AppHeader_button__1owkb').should('have.css', 'outline-color').and('match', colorHex2regex('#fff'))
+    })
+  })
+
+  context('Native event 테스트', () => {
+    beforeEach(() => {
+      cy.visit('https://todo.wellmade.club')
+    })
+
+    it("hover 스타일 테스트", () => {
+      cy.get('.AppHeader_button__1owkb').realHover()
+      cy.get('.AppHeader_button__1owkb').should('have.css', 'background-color').and('match', colorHex2regex('#1d4ed8')) // bg-blue-700
+    })
+
+    it("active 스타일 테스트", () => {
+      cy.get('.AppHeader_button__1owkb').realMouseDown()
+      cy.get('.AppHeader_button__1owkb').should('have.css', 'background-color').and('match', colorHex2regex('#1e3a8a')) // bg-blue-900
+      cy.get('.AppHeader_button__1owkb').realMouseUp()
     })
   })
 })
