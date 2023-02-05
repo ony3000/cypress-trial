@@ -10,6 +10,7 @@
   "dependencies": {},
   "devDependencies": {
     "cypress": "^12.5.1",
+    "cypress-image-snapshot": "^4.0.1",
     "cypress-real-events": "^1.7.6"
   }
 }
